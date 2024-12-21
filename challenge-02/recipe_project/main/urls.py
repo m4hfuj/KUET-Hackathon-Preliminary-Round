@@ -14,4 +14,7 @@ urlpatterns = [
     path('update_recipe/<int:recipe_id>', update_recipe, name ='update_recipe' ),
     path('delete_recipe/<int:recipe_id>',delete_recipe, name= 'delete_recipe' ),
     # path('dashboard/', dashboard_view, name='dashboard'),
+
+    path('generate-recipe/', generate_recipe, name="generate_recipe"),
+    
 ]

@@ -5,6 +5,15 @@ from django.shortcuts import render, redirect,get_object_or_404
 from .models import Ingredient, Recipe
 from .serializers import IngredientSerializer, RecipeSerializer
 
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
+from django.http import JsonResponse
+
+
+
+
 @api_view(['GET', 'POST'])
 def ingredients(request):
     if request.method == 'GET':
@@ -140,3 +149,47 @@ def delete_recipe(request, recipe_id):
     return redirect('recipes')
 
     
+
+
+##########################################################
+#################### AI INTEGRATIONS #####################
+
+from modules.recipe_generator import RecipeGeneratorFromText
+
+def generate_recipe(request):
+    recipes = Recipe.objects.all()
+    ingredients = Ingredient.objects.all()
+
+    ingredients_list = []
+
+    for item in ingredients:
+        # print(item.name, item.quantity, item.unit)
+        ingredients_list.append({
+            "name": item.name,
+            "quantity": item.quantity,
+            "unit": item.unit,
+        })
+
+
+    text = ""
+    for recipe in recipes:
+        text += str(recipe.content) + "\n\n"
+
+    # Create a temporary file in MEDIA_ROOT
+    temp_file_name = 'temp_recipes.txt'
+    temp_file_path = os.path.join(settings.MEDIA_ROOT, temp_file_name)
+    
+    # Save the text content as a file in MEDIA_ROOT
+    if not os.path.exists(settings.MEDIA_ROOT):
+        os.makedirs(settings.MEDIA_ROOT)
+    
+    with default_storage.open(temp_file_path, 'w') as temp_file:
+        temp_file.write(text)
+
+
+    generator = RecipeGeneratorFromText(path=temp_file_path)
+    generated_recipe = generator.generate_recipe(ingredients_list)
+
+    context = {"response": generated_recipe}
+    # return JsonResponse({"response": generated_recipe})
+    return render(request, "recipes/generate_recipe.html", context)
