@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+   
+{% block content %}
+    
+
+
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Append messages to chat
+        function appendMessage(sender, message) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message');
+            if (sender === 'user') {
+                messageDiv.classList.add('user-message');
+            } else {
+                messageDiv.classList.add('bot-message');
+            }
+            messageDiv.textContent = message;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+
+        // Send user message to backend
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Display user message
+            appendMessage('user', message);
+            userInput.value = '';
+
+            try {
+                const response = await fetch(`/chatbot-reply/${encodeURIComponent(message)}/`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+
+                const data = await response.json();
+                appendMessage('bot', data.answer || 'No response from bot');
+            } catch (error) {
+                console.error('Error:', error);
+                appendMessage('bot', 'Error communicating with server');
+            }
+        }
+
+        // Send message on Enter key press
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+{% endblock %}

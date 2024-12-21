@@ -155,6 +155,7 @@ def delete_recipe(request, recipe_id):
 #################### AI INTEGRATIONS #####################
 
 from modules.recipe_generator import RecipeGeneratorFromText
+from modules.chatbot import ChatbotRAGFromText
 
 def generate_recipe(request):
     recipes = Recipe.objects.all()
@@ -193,3 +194,53 @@ def generate_recipe(request):
     context = {"response": generated_recipe}
     # return JsonResponse({"response": generated_recipe})
     return render(request, "recipes/generate_recipe.html", context)
+
+
+
+def chatbot_view(request):
+    return render(request, "recipes/chatbot.html")
+
+
+
+# from modules.chatbot import ChatbotRAGFromText
+
+# recipes = Recipe.objects.all()
+# ingredients = Ingredient.objects.all()
+
+# ingredients_list = []
+
+# # Create a temporary file in MEDIA_ROOT
+temp_file_name = 'temp_recipes.txt'
+temp_file_path = os.path.join(settings.MEDIA_ROOT, temp_file_name)
+
+# for item in ingredients:
+#     # print(item.name, item.quantity, item.unit)
+#     ingredients_list.append({
+#         "name": item.name,
+#         "quantity": item.quantity,
+#         "unit": item.unit,
+#     })
+
+
+# text = ""
+# generator = RecipeGeneratorFromText(path=temp_file_path)
+# text += "\n\n"+generator._textify_dictionary(ingredients_list)
+
+# for recipe in recipes:
+#     text += str(recipe.content) + "\n\n"
+
+
+
+# # Save the text content as a file in MEDIA_ROOT
+# if not os.path.exists(settings.MEDIA_ROOT):
+#     os.makedirs(settings.MEDIA_ROOT)
+
+# with default_storage.open(temp_file_path, 'w') as temp_file:
+#     temp_file.write(text)
+
+chatbot = ChatbotRAGFromText(path=temp_file_path)
+
+
+def chatbot_reply(request, message):
+    answer = chatbot.answer(message=message, session_id="abc123")
+    return JsonResponse({"answer": answer})

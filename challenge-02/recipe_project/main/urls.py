@@ -16,5 +16,8 @@ urlpatterns = [
     # path('dashboard/', dashboard_view, name='dashboard'),
 
     path('generate-recipe/', generate_recipe, name="generate_recipe"),
-    
+    path('chatbot/', chatbot_view, name="chatbot"),
+
+    path('chatbot-reply/<str:message>/', chatbot_reply, name='chatbot_reply'),
+
 ]

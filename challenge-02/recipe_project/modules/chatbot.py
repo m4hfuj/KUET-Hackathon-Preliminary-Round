@@ -41,10 +41,10 @@ class ChatbotRAGFromText:
 
 
         ## Load data
-        # loader = TextLoader(self.path)
+        loader = TextLoader(self.path)
         # docs = loader.load()
 
-        loader = DirectoryLoader(self.path, glob='*.txt')
+        # loader = DirectoryLoader(self.path, glob='*.txt')
         docs = loader.load()
 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
