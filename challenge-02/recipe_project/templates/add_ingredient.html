@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+   
+ {% block content %}
+    
+   <div class="px-4">
+    <br><br><section class="section hero" id="home" aria-label="hero">
+        <h1 class="text-3xl font-semibold mb-6 text-center">Add Ingredient</h1>
+
+        <form method="post" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="name" class="block text-lg  font-semibold text-gray-700">Ingredient Name:</label>
+                <input type="text" id="name" name="name" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="Enter ingredient name">
+            </div>
+
+            <div class="mb-4">
+                <label for="quantity" class="block text-lg font-semibold text-gray-700">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" step="any" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="Enter quantity">
+            </div>
+
+            <div class="mb-4">
+                <label for="unit" class="block text-lg font-semibold text-gray-700">Unit:</label>
+                <select id="unit" name="unit" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select unit</option>
+                    <option value="pieces">Pieces</option>
+                    <option value="grams">Grams</option>
+                    <option value="kilograms">Kilograms</option>
+                    <option value="liters">Liters</option>
+                    <option value="cups">Cups</option>
+                    <option value="tablespoons">Tablespoons</option>
+                    <option value="teaspoons">Teaspoons</option>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full p-3 mt-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Save</button>
+        </form>
+
+
+   </section><br><br>
+</div>
+
+{% endblock %}

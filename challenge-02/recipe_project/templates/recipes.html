@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="px-4">
+    <br><br>
+    <section class="flex flex-col items-center justify-center" id="home" aria-label="hero">
+        <h1 class="text-3xl font-semibold mb-6 text-center">Recipes List</h1>
+
+        <div class="overflow-x-auto w-1/2 bg-teal-50">
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 text-left font-medium text-gray-700">Name</th>
+                        <th class="py-2 px-4 text-left font-medium text-gray-700">content</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recipe in recipes %}
+                    <tr class="border-t">
+                        <td class="py-2 px-4 text-gray-700">{{ recipe.name }}</td>
+                        <td class="py-2 px-4 text-gray-700">{{ recipe.content }}</td>
+                        <td class="py-2 px-4 space-y-2 text-gray-700">
+                            <a href="{% url 'update_recipe' recipe.id %}" class="text-white bg-yellow-500 hover:bg-yellow-600 rounded-md px-4 py-2 inline-block">Update</a>
+                            <form action="{% url 'delete_recipe' recipe.id %}" method="POST" class="inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 rounded-md px-5 py-2 inline-block">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{% url 'add_recipes' %}" class="bg-blue-600 px-4 py-2 text-white font-semibold rounded-md hover:bg-blue-700 mt-4 inline-block text-center">Add Recipe</a>
+    </section>
+    <br><br>
+</div>
+{% endblock %}

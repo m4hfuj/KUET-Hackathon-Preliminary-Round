@@ -1,0 +1,56 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+env/
+venv/
+ENV/
+.env
+.venv
+*.env.*
+
+
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Git directories
+*.orig
+.git/
+
+# Coverage reports
+htmlcov/
+.coverage
+.cache
+
+# Test and linting
+*.pytest_cache/
+.tox/
+*.mypy_cache/
+
+# Node and frontend-related
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Compiled files
+*.out
+*.class
+
+# Deployment files
+*.bak
+*.pid
+
+# Ignore migrations (optional)
+migrations/**/000*.pyc
+migrations/**/000*.py
